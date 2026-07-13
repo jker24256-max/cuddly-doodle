@@ -82,6 +82,8 @@ jobs:
           mkdir -p "${WORK_DIR}" "${OUT_DIR}"
 
           echo "==> Starting mkarchiso (profile: ${GITHUB_WORKSPACE})"
+          mkdir -p /tmp/jker-work/x86_64/airootfs/boot/
+          cp -v /tmp/jker-work/x86_64/airootfs/usr/lib/modules/*/initramfs* /tmp/jker-work/x86_64/airootfs/boot/ || true
           mkarchiso -v -w "${WORK_DIR}" -o "${OUT_DIR}" "${GITHUB_WORKSPACE}"
 
           ISO_PATH="$(find "${OUT_DIR}" -maxdepth 1 -type f -name '*.iso' | sort | head -n 1)"
