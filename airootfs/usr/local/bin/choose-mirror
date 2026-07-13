@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Jker-OS mirror selector for live environment
+set -euo pipefail
+
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root." >&2
+    exit 1
+fi
+
+reflector --country US --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+echo "Mirror list updated."

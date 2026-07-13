@@ -1,0 +1,11 @@
+[Unit]
+Description=Jker-OS Live Environment Setup
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/.automated_script.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

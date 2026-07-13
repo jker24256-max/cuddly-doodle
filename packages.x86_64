@@ -1,0 +1,74 @@
+# Jker-OS base system
+base
+linux
+linux-firmware
+mkinitcpio
+mkinitcpio-archiso
+arch-install-scripts
+# Networking & utilities
+networkmanager
+sudo
+nano
+vim
+wget
+curl
+git
+htop
+zip
+unzip
+reflector
+# Desktop environment — KDE Plasma
+plasma-desktop
+plasma-workspace
+plasma-nm
+plasma-pa
+kde-gtk-config
+kscreen
+dolphin
+konsole
+kate
+ark
+spectacle
+kdeconnect
+powerdevil
+bluedevil
+kwin
+kwin-x11
+breeze
+breeze-gtk
+breeze-icons
+oxygen-icons
+noto-fonts
+noto-fonts-emoji
+ttf-jetbrains-mono-nerd
+# Display manager — LightDM + WebKit2 greeter
+lightdm
+lightdm-webkit2-greeter
+accountsservice
+# Live animated wallpaper
+mpv
+# Web browser
+firefox
+# Audio
+pipewire
+pipewire-alsa
+pipewire-pulse
+wireplumber
+# Graphics & fonts
+mesa
+xorg-server
+xorg-xinit
+xorg-xrandr
+xorg-xsetroot
+xorg-xprop
+xorg-xwininfo
+libva-mesa-driver
+vulkan-intel
+vulkan-radeon
+# Bootloader themes
+grub
+# ISO live session helpers
+memtest86+-efi
+syslinux
+syslinux
+grub

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jker-OS Login</title>
+    <style>
+        /* ── Reset & Base ─────────────────────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --neon-red:    #FF0055;
+            --neon-violet: #8A2BE2;
+            --acid-green:  #39FF14;
+            --arc-blue:    #00D4FF;
+            --arc-cyan:    #00FFFF;
+            --terminal-bg: #0A0A0A;
+            --joker-purple:#9B30FF;
+        }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            background: var(--terminal-bg);
+            color: var(--neon-red);
+        }
+
+        /* ── Animated Cyberpunk Grid Background ───────────────────── */
+        .bg-grid {
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                linear-gradient(rgba(138,43,226,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138,43,226,0.07) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridScroll 12s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            0%   { background-position: 0 0, 0 0; }
+            100% { background-position: 0 40px, 40px 0; }
+        }
+
+        /* ── Spider-Verse scanline overlay ────────────────────────── */
+        .scanlines {
+            position: fixed; inset: 0; z-index: 1; pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.15) 2px,
+                rgba(0,0,0,0.15) 4px
+            );
+        }
+
+        /* ── Glitch noise layer ───────────────────────────────────── */
+        .noise {
+            position: fixed; inset: 0; z-index: 2; pointer-events: none;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            animation: noiseFlicker 0.15s steps(2) infinite;
+        }
+
+        @keyframes noiseFlicker {
+            0%, 100% { opacity: 0.04; }
+            50%      { opacity: 0.08; }
+        }
+
+        /* ── Main Layout ──────────────────────────────────────────── */
+        .container {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* ── JKER Header — Arc Reactor ↔ Spider-Verse Glitch ─────── */
+        .logo {
+            font-size: clamp(4rem, 12vw, 9rem);
+            font-weight: 900;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            position: relative;
+            animation: arcPulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes arcPulse {
+            0% {
+                color: var(--arc-cyan);
+                text-shadow:
+                    0 0 10px var(--arc-blue),
+                    0 0 30px var(--arc-blue),
+                    0 0 60px var(--arc-cyan),
+                    0 0 100px rgba(0,212,255,0.5);
+                filter: hue-rotate(0deg);
+            }
+            45% {
+                color: var(--arc-cyan);
+                text-shadow:
+                    0 0 10px var(--arc-blue),
+                    0 0 30px var(--arc-blue),
+                    0 0 60px var(--arc-cyan),
+                    0 0 100px rgba(0,212,255,0.5);
+            }
+            55% {
+                color: var(--neon-red);
+                text-shadow:
+                    3px 0 var(--neon-violet),
+                    -3px 0 var(--acid-green),
+                    0 0 20px var(--neon-red),
+                    0 0 50px var(--neon-violet);
+                transform: skewX(-2deg);
+            }
+            100% {
+                color: var(--neon-red);
+                text-shadow:
+                    4px 0 var(--neon-violet),
+                    -4px 0 var(--acid-green),
+                    0 0 20px var(--neon-red),
+                    0 0 60px var(--neon-violet),
+                    0 0 100px rgba(255,0,85,0.4);
+                transform: skewX(1deg);
+                filter: hue-rotate(20deg);
+            }
+        }
+
+        /* Glitch pseudo-elements for Spider-Verse digital tear */
+        .logo::before, .logo::after {
+            content: 'JKER';
+            position: absolute; top: 0; left: 0;
+            width: 100%; overflow: hidden;
+        }
+
+        .logo::before {
+            color: var(--neon-violet);
+            animation: glitchTop 2.5s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+        }
+
+        .logo::after {
+            color: var(--acid-green);
+            animation: glitchBot 2.5s infinite reverse;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitchTop {
+            0%, 90%, 100% { transform: translate(0); opacity: 0; }
+            91% { transform: translate(-6px, -2px); opacity: 1; }
+            93% { transform: translate(4px, 1px); opacity: 0.8; }
+            95% { transform: translate(-3px, 0); opacity: 0; }
+        }
+
+        @keyframes glitchBot {
+            0%, 88%, 100% { transform: translate(0); opacity: 0; }
+            89% { transform: translate(5px, 2px); opacity: 1; }
+            91% { transform: translate(-4px, -1px); opacity: 0.7; }
+            94% { transform: translate(2px, 0); opacity: 0; }
+        }
+
+        /* ── Subtitle tagline ─────────────────────────────────────── */
+        .tagline {
+            font-size: 0.75rem;
+            letter-spacing: 0.5em;
+            color: var(--acid-green);
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            animation: taglineFlicker 4s infinite;
+        }
+
+        @keyframes taglineFlicker {
+            0%, 95%, 100% { opacity: 1; }
+            96% { opacity: 0.3; }
+            97% { opacity: 1; }
+            98% { opacity: 0.5; }
+        }
+
+        /* ── Login Panel ──────────────────────────────────────────── */
+        .login-panel {
+            background: rgba(10, 10, 10, 0.85);
+            border: 1px solid var(--neon-violet);
+            border-radius: 4px;
+            padding: 2.5rem 3rem;
+            width: min(420px, 90vw);
+            box-shadow:
+                0 0 20px rgba(138,43,226,0.3),
+                0 0 60px rgba(255,0,85,0.15),
+                inset 0 0 30px rgba(0,212,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-panel::before {
+            content: '';
+            position: absolute; top: 0; left: -100%;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--arc-cyan), var(--neon-red), transparent);
+            animation: panelScan 3s linear infinite;
+        }
+
+        @keyframes panelScan {
+            0%   { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .login-panel h2 {
+            font-size: 0.85rem;
+            letter-spacing: 0.3em;
+            color: var(--neon-violet);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* ── Form Elements ────────────────────────────────────────── */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--acid-green);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(138,43,226,0.5);
+            border-radius: 2px;
+            color: var(--neon-red);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--arc-cyan);
+            box-shadow: 0 0 15px rgba(0,212,255,0.3);
+        }
+
+        /* ── Login Button ─────────────────────────────────────────── */
+        .btn-login {
+            width: 100%;
+            padding: 0.9rem;
+            margin-top: 0.5rem;
+            background: linear-gradient(135deg, var(--neon-violet), var(--neon-red));
+            border: none;
+            border-radius: 2px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.1s;
+        }
+
+        .btn-login:hover {
+            box-shadow:
+                0 0 20px rgba(255,0,85,0.6),
+                0 0 40px rgba(138,43,226,0.4);
+            transform: scale(1.02);
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        /* ── Footer ───────────────────────────────────────────────── */
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: rgba(57,255,20,0.5);
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* ── Corner accents (Iron Man HUD) ────────────────────────── */
+        .hud-corner {
+            position: fixed;
+            width: 60px; height: 60px;
+            border: 2px solid var(--arc-cyan);
+            opacity: 0.4;
+            z-index: 5;
+        }
+        .hud-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+        .hud-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+        .hud-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+        .hud-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+
+    <div class="hud-corner hud-tl"></div>
+    <div class="hud-corner hud-tr"></div>
+    <div class="hud-corner hud-bl"></div>
+    <div class="hud-corner hud-br"></div>
+
+    <div class="container">
+        <h1 class="logo">JKER</h1>
+        <p class="tagline">Beyond the Spider-Verse &nbsp;·&nbsp; Chaos Protocol &nbsp;·&nbsp; Night City</p>
+
+        <div class="login-panel">
+            <h2>// Authenticate</h2>
+            <form id="login-form" method="POST" action="/login">
+                <div class="form-group">
+                    <label for="username">Identity</label>
+                    <input type="text" id="username" name="username" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Passcode</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="session">Session</label>
+                    <select id="session" name="session">
+                        <option value="">Plasma (X11)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-login">Enter</button>
+            </form>
+        </div>
+
+        <p class="footer">Stark Industries &nbsp;·&nbsp; Joker Protocol &nbsp;·&nbsp; v1.0</p>
+    </div>
+
+    <script>
+        // LightDM WebKit2 greeter bridge
+        (function () {
+            'use strict';
+
+            function ready(fn) {
+                if (document.readyState !== 'loading') fn();
+                else document.addEventListener('DOMContentLoaded', fn);
+            }
+
+            ready(function () {
+                if (typeof window.lightdm === 'undefined') {
+                    console.warn('LightDM API not available — preview mode.');
+                    return;
+                }
+
+                var form = document.getElementById('login-form');
+                var userInput = document.getElementById('username');
+                var passInput = document.getElementById('password');
+                var sessionSelect = document.getElementById('session');
+
+                // Populate users
+                if (lightdm.users && lightdm.users.length > 0) {
+                    userInput.value = lightdm.users[0].username;
+                }
+
+                // Populate sessions
+                if (lightdm.sessions && lightdm.sessions.length > 0) {
+                    sessionSelect.innerHTML = '';
+                    lightdm.sessions.forEach(function (s) {
+                        var opt = document.createElement('option');
+                        opt.value = s.key;
+                        opt.textContent = s.name;
+                        sessionSelect.appendChild(opt);
+                    });
+                }
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    var user = userInput.value;
+                    var pass = passInput.value;
+                    var session = sessionSelect.value || null;
+                    lightdm.login(user, pass, session);
+                });
+
+                // Arc-reactor pulse sync on focus
+                document.querySelectorAll('input').forEach(function (el) {
+                    el.addEventListener('focus', function () {
+                        document.querySelector('.logo').style.animationDuration = '1s';
+                    });
+                    el.addEventListener('blur', function () {
+                        document.querySelector('.logo').style.animationDuration = '3s';
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

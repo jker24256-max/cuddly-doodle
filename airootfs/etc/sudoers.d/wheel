@@ -1,0 +1,2 @@
+# Jker-OS sudoers — wheel group
+%wheel ALL=(ALL:ALL) ALL

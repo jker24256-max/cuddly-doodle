@@ -1,0 +1,11 @@
+NAME="Jker OS"
+PRETTY_NAME="Jker OS"
+ID=jker-os
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;255;0;85"
+HOME_URL="https://archlinux.org/"
+DOCUMENTATION_URL="https://wiki.archlinux.org/"
+SUPPORT_URL="https://bbs.archlinux.org/"
+BUG_REPORT_URL="https://bugs.archlinux.org/"
+LOGO=archlinux-logo

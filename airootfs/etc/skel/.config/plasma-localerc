@@ -1,0 +1,7 @@
+[General]
+ColorScheme=JkerNeonChaos
+accentColorFromWallpaper=false
+
+[Wallpaper]
+defaultImagePath=/usr/share/jker-os/assets/jker-desktop-bg.png
+defaultFillMode=6

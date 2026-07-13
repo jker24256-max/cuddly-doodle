@@ -1,0 +1,12 @@
+# Jker-OS GRUB defaults — custom neon theme
+GRUB_TIMEOUT=10
+GRUB_DISTRIBUTOR="Jker OS"
+GRUB_DEFAULT=0
+GRUB_SAVEDEFAULT=false
+GRUB_TERMINAL_OUTPUT="gfxterm"
+GRUB_GFXMODE=auto
+GRUB_GFXPAYLOAD_LINUX=keep
+GRUB_THEME="/usr/share/grub/themes/jker-grub/theme.txt"
+GRUB_BACKGROUND="/usr/share/grub/themes/jker-grub/background.png"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX=""

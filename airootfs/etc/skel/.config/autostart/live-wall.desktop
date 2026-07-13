@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Jker Live Wallpaper
+Comment=Loop animated cyberpunk wallpaper via mpv
+Exec=/usr/local/bin/live-wallpaper.sh
+Terminal=false
+X-KDE-autostart-phase=2
+OnlyShowIn=KDE;

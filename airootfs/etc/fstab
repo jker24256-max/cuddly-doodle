@@ -1,0 +1,2 @@
+# Jker-OS fstab — live overlay, populated by archiso at boot
+# UUID=XXXX-XXXX /boot/efi vfat defaults 0 2
