@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 iso_name="jker-os"
-iso_label="JKER_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
+iso_label="jker-os"
 iso_publisher="Jker OS Team <jker@localhost>"
 iso_application="Jker OS Live/Rescue ISO"
 iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
