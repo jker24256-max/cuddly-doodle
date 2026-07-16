@@ -8,7 +8,7 @@ iso_application="Jker OS Live/Rescue ISO"
 iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
 install_dir="arch"
 buildmodes=('iso')
-bootmodes=('bios.syslinux' 'uefi.systemd-boot')
+boot_modes=('bios.syslinux.ext' 'bios.syslinux.eltorito' 'uefi.systemd-boot.esp' 'uefi.systemd-boot.uki')
 arch="x86_64"
 pacman_conf="pacman.conf"
 airootfs_image_type="squashfs"
