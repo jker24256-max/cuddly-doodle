@@ -59,24 +59,25 @@ jobs:
 
       - name: Prepare profile scripts and assets
         run: |
-          set -euo pipefail
           chmod +x profiledef.sh customize_airootfs.sh download_assets.sh
 
           ASSET_DIR="airootfs/usr/share/jker-os/assets"
           GRUB_AIROOTFS="airootfs/usr/share/grub/themes/jker-grub"
           GRUB_ISO="grub/themes/jker-grub"
 
-          if [[ -s "${ASSET_DIR}/jker-live-wall.mp4" && -s "${ASSET_DIR}/jker-desktop-bg.png" ]]; then
-            echo "Bundled assets found; skipping download_assets.sh"
-            mkdir -p "${GRUB_AIROOTFS}" "${GRUB_ISO}"
+          echo "==> Setting up theme assets directories..."
+          mkdir -p "${GRUB_AIROOTFS}" "${GRUB_ISO}"
+
+          echo "==> Running download assets script..."
+          ./download_assets.sh || true
+
+          if [ -f "${ASSET_DIR}/jker-desktop-bg.png" ]; then
             cp "${ASSET_DIR}/jker-desktop-bg.png" "${GRUB_AIROOTFS}/background.png"
             cp "${ASSET_DIR}/jker-desktop-bg.png" "${GRUB_ISO}/background.png"
-          else
-            bash download_assets.sh
           fi
 
-           - name: Build ISO with mkarchiso
-             run: |
+      - name: Build ISO with mkarchiso
+        run: |
           set -euo pipefail
           rm -rf "${WORK_DIR}" "${OUT_DIR}"
           mkdir -p "${WORK_DIR}" "${OUT_DIR}"
@@ -101,7 +102,6 @@ jobs:
           fi
 
           cp "${ISO_PATH}" "${OUT_DIR}/jker-os.iso"
-
 
       - name: Fast Push to Continuous Rolling Release
         uses: softprops/action-gh-release@v2
