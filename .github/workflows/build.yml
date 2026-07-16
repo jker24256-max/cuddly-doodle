@@ -75,25 +75,33 @@ jobs:
             bash download_assets.sh
           fi
 
-      - name: Build ISO with mkarchiso
-        run: |
+           - name: Build ISO with mkarchiso
+             run: |
           set -euo pipefail
           rm -rf "${WORK_DIR}" "${OUT_DIR}"
           mkdir -p "${WORK_DIR}" "${OUT_DIR}"
 
-          echo "==> Starting mkarchiso (profile: ${GITHUB_WORKSPACE})"
-          # Removed manual work_dir copy commands that were corrupting EFI stub generations
-          mkarchiso -v -w "${WORK_DIR}" -o "${OUT_DIR}" "${GITHUB_WORKSPACE}"
+          echo "==> Injecting premium releng profile layouts..."
+          # 1. Create a clean production template folder
+          mkdir -p /tmp/releng-profile
+          
+          # 2. Copy the official Arch Linux releng profile tools into it
+          cp -r /usr/share/archiso/configs/releng/* /tmp/releng-profile/
+          
+          # 3. Force overwrite it with your custom package lists and configurations
+          cp -rf ${GITHUB_WORKSPACE}/* /tmp/releng-profile/
+
+          echo "==> Executing compiler with updated releng paths"
+          mkarchiso -v -w "${WORK_DIR}" -o "${OUT_DIR}" /tmp/releng-profile/
 
           ISO_PATH="$(find "${OUT_DIR}" -maxdepth 1 -type f -name '*.iso' | sort | head -n 1)"
           if [[ -z "${ISO_PATH}" ]]; then
             echo "ERROR: mkarchiso did not produce an ISO in ${OUT_DIR}" >&2
-            ls -la "${OUT_DIR}" || true
             exit 1
           fi
 
           cp "${ISO_PATH}" "${OUT_DIR}/jker-os.iso"
-          ls -lh "${OUT_DIR}/jker-os.iso"
+
 
       - name: Fast Push to Continuous Rolling Release
         uses: softprops/action-gh-release@v2
