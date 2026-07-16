@@ -5,7 +5,7 @@ iso_name="jker-os"
 iso_label="jker-os"
 iso_publisher="Jker OS Team <jker@localhost>"
 iso_application="Jker OS Live/Rescue ISO"
-iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
+iso_version="2026.07"
 install_dir="arch"
 buildmodes=('iso')
 boot_modes=('bios.syslinux.ext' 'bios.syslinux.eltorito' 'uefi.systemd-boot.esp' 'uefi.systemd-boot.uki')
