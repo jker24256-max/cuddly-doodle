@@ -90,7 +90,7 @@ jobs:
           cp -r /usr/share/archiso/configs/releng/* /tmp/releng-profile/
           
           # 3. Force overwrite it with your custom package lists and configurations
-          cp -rf ${GITHUB_WORKSPACE}/* /tmp/releng-profile/
+          cp -rf --remove-destination ${GITHUB_WORKSPACE}/* /tmp/releng-profile/
 
           echo "==> Executing compiler with updated releng paths"
           mkarchiso -v -w "${WORK_DIR}" -o "${OUT_DIR}" /tmp/releng-profile/
